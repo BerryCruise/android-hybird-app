@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="debug"><source path="/Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroid/build/intermediates/bundles/debug/assets"/></dataSet><dataSet config="main"><source path="/Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroid/src/androidTest/assets"/><source path="/Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroid/build/generated/assets/shaders/androidTest/debug"/></dataSet></merger>
