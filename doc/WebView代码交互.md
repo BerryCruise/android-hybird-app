@@ -1,3 +1,27 @@
+#WebView代码交互
+
+作者: 郭嘉
+邮箱: guoxiaoxingv@163.com  
+博客: https://guoxiaoxing.github.io/  
+知乎: https://www.zhihu.com/people/allen-wells
+
+**关于作者**
+
+>Android Coder一枚, 目前就职于杭州大搜车汽车汽车服务有限公司。爱技术、爱烹饪、爱小提琴、爱一切新鲜有趣的事物。
+人生格言: 不想当程序员的歌手不是好厨师。
+
+**关于文章**
+
+>作者的每一篇文章都会同时发布在Github、CSDN和知乎上, 文章顶部也会附上文章的源链接和代码链接。如果文章中有什么疑问欢迎发邮件与
+我交流, 对于交流的问题, 请描述清楚并附上代码与日志, 我一般都会给予回复。如果文章中有什么错误, 也欢迎斧正。如果你觉得本文章对你
+有所帮助, 也欢迎去[我的Github](https://github.com/guoxiaoxing) star文章, 关注文章的最新的动态。
+
+本系列文章讨论WebView的各种用法以及使用技巧, 一共包含三篇文章:
+
+[WebView基本用法]()
+[WebView代码交互]()
+[WebView性能优化]()
+
 关于WebView中Java代码和JS代码的交互实现, Android给了一套原生的方案, 我们先来看看原生的用法。后面我们还会讲到其他的开源方法。
 
 JavaScript代码和Android代码是通过addJavascriptInterface()来建立连接的, 我们来看下具体的用法。
@@ -53,5 +77,125 @@ webView.addJavascriptInterface(new WebAppInterface(this), "Android");
 在JavaScript中我们不用再去实例化WebAppInterface接口, WebView会自动帮我们完成这一工作, 使它能够为WebPage所用。
 
 **注意**:
-由于addJavascriptInterface()给予了JS代码控制应用的能力, 这是一项非常有用的特性, 但同时也带来了安全上的隐患, 解决方案是用开源方案
+
+由于addJavascriptInterface()给予了JS代码控制应用的能力, 这是一项非常有用的特性, 但同时也带来了安全上的隐患, 
+
+> Using addJavascriptInterface() allows JavaScript to control your Android application. This can be a very useful feature or a dangerous 
+security issue. When the HTML in the WebView is untrustworthy (for example, part or all of the HTML is provided by an unknown person or 
+process), then an attacker can include HTML that executes your client-side code and possibly any code of the attacker's choosing. As such, 
+you should not use addJavascriptInterface() unless you wrote all of the HTML and JavaScript that appears in your WebView. You should also 
+not allow the user to navigate to other web pages that are not your own, within your WebView (instead, allow the user's default browser 
+application to open foreign links—by default, the user's web browser opens all URL links, so be careful only if you handle page navigation
+as described in the following section).
+ 
+下面正式引入我们在项目中常用的两套开源的替代方案
+
+#一 jockeyjs
+
+[jockeyjs](https://github.com/tcoulter/jockeyjs)是一套IOS/Android双平台的Native和JS交互方法, 比较适合用在项目中。
+
+>Library to facilitate communication between iOS apps and JS apps running inside a UIWebView
+
+jockeyjs对Native和JS的交互做了优美的封装, 事件的发送与接收都可以通过send()和on()来完成。
+
+Sending events from app to JavaScript
+
+```java
+// Send an event to JavaScript, passing a payload
+jockey.send("event-name", webView, payload);
+
+//With a callback to execute after all listeners have finished
+jockey.send("event-name", webView, payload, new JockeyCallback() {
+    @Override
+    public void call() {
+        //Your execution code
+    }
+});
+```
+
+Receiving events from app in JavaScript
+
+```java
+// Listen for an event from iOS, but don't notify iOS we've completed processing
+// until an asynchronous function has finished (in this case a timeout).
+Jockey.on("event-name", function(payload, complete) {
+  // Example of event'ed handler.
+  setTimeout(function() {
+    alert("Timeout over!");
+    complete();
+  }, 1000);
+});
+```
+
+Sending events from JavaScript to app
+
+```java
+// Send an event to iOS.
+Jockey.send("event-name");
+
+// Send an event to iOS, passing an optional payload.
+Jockey.send("event-name", {
+  key: "value"
+});
+
+// Send an event to iOS, pass an optional payload, and catch the callback when all the
+// iOS listeners have finished processing.
+Jockey.send("event-name", {
+  key: "value"
+}, function() {
+  alert("iOS has finished processing!");
+});
+```
+
+Receiving events from JavaScript in app
+
+```java
+//Listen for an event from JavaScript and log a message when we have receied it.
+jockey.on("event-name", new JockeyHandler() {
+    @Override
+    protected void doPerform(Map<Object, Object> payload) {
+        Log.d("jockey", "Things are happening");
+    }
+});
+
+//Listen for an event from JavaScript, but don't notify the JavaScript that the listener has completed
+//until an asynchronous function has finished
+//Note: Because this method is executed in the background, if you want the method to interact with the UI thread
+//it will need to use something like a android.os.Handler to post to the UI thread.
+jockey.on("event-name", new JockeyAsyncHandler() {
+    @Override
+    protected void doPerform(Map<Object, Object> payload) {
+        //Do something asynchronously
+        //No need to called completed(), Jockey will take care of that for you!
+    }
+});
+
+
+//We can even chain together several handlers so that they get processed in sequence.
+//Here we also see an example of the NativeOS interface which allows us to chain some common
+//system handlers to simulate native UI interactions.
+jockey.on("event-name", nativeOS(this)
+            .toast("Event occurred!")
+            .vibrate(100), //Don't forget to grant permission
+            new JockeyHandler() {
+                @Override
+                protected void doPerform(Map<Object, Object> payload) {
+                }
+            }
+);
+
+//...More Handlers
+
+
+//If you would like to stop listening for a specific event
+jockey.off("event-name");
+
+//If you would like to stop listening to ALL events
+jockey.clear();
+```
+
+#二 safe-java-js-webview-bridge
+
+解决方案是用开源方案
+
 [pedant/safe-java-js-webview-bridge](https://github.com/pedant/safe-java-js-webview-bridge)来实现代码交互。

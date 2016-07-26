@@ -1,1 +1,3 @@
 include ':demo', ':webview'
+include ':jockeyJSAndroid'
+include ':jockeyJSAndroidSample'

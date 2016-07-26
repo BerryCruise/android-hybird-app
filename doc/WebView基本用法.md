@@ -1,6 +1,21 @@
-#WebView使用技巧
+#WebView基本用法
 
-本系列本章用来介绍WebView的使用和性能优化问题, 共分为两篇:
+作者: 郭嘉
+邮箱: guoxiaoxingv@163.com  
+博客: https://guoxiaoxing.github.io/  
+知乎: https://www.zhihu.com/people/allen-wells
+
+**关于作者**
+
+>Android Coder一枚, 目前就职于杭州大搜车汽车汽车服务有限公司。爱技术、爱烹饪、爱小提琴、爱一切新鲜有趣的事物。
+人生格言: 不想当程序员的歌手不是好厨师。
+
+**关于文章**
+
+>作者的每一篇文章都会同时发布在Github、CSDN和知乎上, 文章顶部也会附上文章的源链接和代码链接。如果文章中有什么疑问欢迎发邮件与
+我交流, 对于交流的问题, 请描述清楚并附上代码与日志, 我一般都会给予回复。如果文章中有什么错误, 也欢迎斧正。如果你觉得本文章对你
+有所帮助, 也欢迎去[我的Github](https://github.com/guoxiaoxing) star文章, 关注文章的最新的动态。
+
 
 WebView也是Android View的一种, 我们通常用它来在应用内部展示网页, 和以往一样, 我们先来简单看一下它的基本用法。
 
@@ -30,10 +45,11 @@ myWebView.loadUrl("http://www.example.com");
 
 以上就是WebView的简单用法, 相比大家已经十分熟悉, 下面我们就来逐一看看WebView的其他特性。
 
+#一 WebView基本组件
 
 了解了基本用法, 我们对WebView就有了大致的印象, 下面我们来看看构建Web应用的三个重要组件。
 
-#一 WebSettings
+##1.1 WebSettings
 
 WebSettings用来对WebView做各种设置, 你可以这样获取WebSettings:
 
@@ -60,20 +76,22 @@ JS处理
 内容布局
 
 - setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN); //支持内容重新布局
-- supportMultipleWindows();  //多窗口 
+- supportMultipleWindows(); //多窗口 
 
 文件缓存
 
-- setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);  //关闭webview中缓存 
+- setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //关闭webview中缓存 
 - setAllowFileAccess(true);  //设置可以访问文件 
 
 其他设置
 
 - setNeedInitialFocus(true); //当webview调用requestFocus时为webview设置节点
-- setLoadsImagesAutomatically(true);  //支持自动加载图片
-- setDefaultTextEncodingName("utf-8");//设置编码格式
+- setLoadsImagesAutomatically(true); //支持自动加载图片
+- setDefaultTextEncodingName("utf-8"); //设置编码格式
+- setPluginState(PluginState.OFF); //设置是否支持flash插件
+- setDefaultFontSize(20); //设置默认字体大小
 
-#二 WebViewClient
+##1.2 WebViewClient
 
 WebViewClient用来帮助WebView处理各种通知, 请求事件。我们通过继承WebViewClient并重载它的方法可以实现不同功能的定制。具体如下所示:
 
@@ -101,10 +119,9 @@ WebViewClient用来帮助WebView处理各种通知, 请求事件。我们通过�
 
 - onUnhandledKeyEvent(WebView view, KeyEvent event) //Key事件未被加载时调用
 
-#三 WebChromeClient
+##1.3 WebChromeClient
 
 WebChromeClient用来帮助WebView处理JS的对话框、网址图标、网址标题和加载进度等。同样地, 通过继承WebChromeClient并重载它的方法也可以实现不同功能的定制, 如下所示:
-
 
 - public void onProgressChanged(WebView view, int newProgress); //获得网页的加载进度，显示在右上角的TextView控件中
 
@@ -112,9 +129,9 @@ WebChromeClient用来帮助WebView处理JS的对话框、网址图标、网址�
 
 - public void onReceivedIcon(WebView view, Bitmap icon); //获取Web页中的icon
 
-- public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
+- public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg);
 
-    public void onCloseWindow(WebView window);
+- public void onCloseWindow(WebView window);
 
 - public boolean onJsAlert(WebView view, String url, String message, JsResult result); //处理alert弹出框，html 弹框的一种方式
 
@@ -122,9 +139,37 @@ WebChromeClient用来帮助WebView处理JS的对话框、网址图标、网址�
 
 - public boolean onJsConfirm(WebView view, String url, String message, JsResult result); //处理prompt弹出框
 
-#二 WebView页面导航
+#二 WebView生命周期
 
-##2.1 页面跳转
+##2.1 onResume()  
+
+WebView为活跃状态时回调，可以正常执行网页的响应。
+
+##2.2 onPause() 
+
+WebView被切换到后台时回调, 页面被失去焦点, 变成不可见状态，onPause动作通知内核暂停所有的动作，比如DOM的解析、plugin的执行、JavaScript执行。
+
+##2.3 pauseTimers() 
+
+当应用程序被切换到后台时回调，该方法针对全应用程序的WebView，它会暂停所有webview的layout，parsing，javascripttimer。降低CPU功耗。
+
+##2.4 resumeTimers()
+
+恢复pauseTimers时的动作。
+
+##2.5 destroy() 
+
+关闭了Activity时回调, WebView调用destory时, WebView仍绑定在Activity上.这是由于自定义WebView构建时传入了该Activity的context对象, 因此需要先从父
+容器中移除WebView, 然后再销毁webview。
+
+```java
+mRootLayout.removeView(webView);  
+mWebView.destroy();
+```
+
+#三 WebView页面导航
+
+##3.1 页面跳转
 
 当我们在WebView点击链接时, 默认的WebView会直接跳转到别的浏览器中, 如果想要实现在WebView内跳转就需要设置WebViewClient, 下面我们先来
 说说WebView、WebViewClient、WebChromeClient三者的区别。
@@ -161,6 +206,7 @@ WebChromeClient用来帮助WebView处理JS的对话框、网址图标、网址�
 关于shouldOverrideUrlLoading()方法的两点说明:
 
 1 方法返回值
+
 返回true: Android 系统会处理URL, 一般是唤起系统浏览器。
 返回false: 当前 WebView 处理URL。
 
@@ -204,7 +250,7 @@ shouldOverrideUrlLoading()方法在API >= 24时被标记deprecated, 它的替代
 http://stackoverflow.com/questions/36484074/is-shouldoverrideurlloading-really-deprecated-what-can-i-use-instead  
 http://stackoverflow.com/questions/26651586/difference-between-shouldoverrideurlloading-and-shouldinterceptrequest
 
-##2.2 页面回退
+##3.2 页面回退
 
 Android的返回键, 如果想要实现WebView内网页的回退, 可以重写onKeyEvent()方法。
 
@@ -222,9 +268,69 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 }
 ```
 
-##2.3 页面滑动
+##3.3 页面滑动
 
+关于页面滑动, 我们在做下拉刷新等功能时, 经常会去判断WebView是否滚动到顶部或者滚动到底部。
 
+我们先来看一看三个判断高度的方法
+
+```java
+getScrollY();
+```
+
+该方法返回的是当前可见区域的顶端距整个页面顶端的距离,也就是当前内容滚动的距离.
+
+```java
+getHeight();
+getBottom();
+```
+
+该方法都返回当前WebView这个容器的高度
+
+```
+getContentHeight(); 
+```
+
+返回的是整个html的高度, 但并不等同于当前整个页面的高度, 因为WebView有缩放功能, 所以当前整个页面的高度实际上应该是原始html的高度
+再乘上缩放比例. 因此, 判断方法是:
+
+```java
+if (webView.getContentHeight() * webView.getScale() == (webView.getHeight() + webView.getScrollY())) {
+    //已经处于底端
+}
+
+if(webView.getScrollY() == 0){
+    //处于顶端
+}
+```
+
+以上这个方法也是我们常用的方法, 不过从API 17开始, mWebView.getScale()被标记为deprecated
+
+>This method was deprecated in API level 17. This method is prone to inaccuracy due to race conditions 
+between the web rendering and UI threads; prefer onScaleChanged(WebView, 
+
+因为scale的获取可以用一下方式:
+
+```java
+public class CustomWebView extends WebView {
+
+public CustomWebView(Context context) {
+    super(context);
+    setWebViewClient(new WebViewClient() {
+        @Override
+        public void onScaleChanged(WebView view, float oldScale, float newScale) {
+            super.onScaleChanged(view, oldScale, newScale);
+            mCurrentScale = newScale
+        }
+    });
+}
+```
+
+关于mWebView.getScale()的讨论可以参见:
+
+https://developer.android.com/reference/android/webkit/WebView.html
+
+http://stackoverflow.com/questions/16079863/how-get-webview-scale-in-android-4
 
 #三 WebView缓存实现
 
@@ -246,8 +352,9 @@ WwebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 清除缓存
 
 ```java
-mWebView.clearCache(true);
-mWebView.clearHistory();
+clearCache(true); //清除网页访问留下的缓存，由于内核缓存是全局的因此这个方法不仅仅针对webview而是针对整个应用程序.
+clearHistory (); //清除当前webview访问的历史记录，只会webview访问历史记录里的所有记录除了当前访问记录.
+clearFormData () //这个api仅仅清除自动完成填充的表单数据，并不会清除WebView存储到本地的数据。
 ```
 
 #四 WebView Cookies

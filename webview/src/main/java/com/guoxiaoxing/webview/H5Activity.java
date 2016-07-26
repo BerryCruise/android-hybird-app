@@ -22,6 +22,8 @@ import android.webkit.WebViewClient;
  */
 public class H5Activity extends AppCompatActivity {
 
+    public static final String H5_URL = "H5_URL";
+
     private String mUrl;
     private WebView mWebView;
 
@@ -31,7 +33,7 @@ public class H5Activity extends AppCompatActivity {
         setContentView(R.layout.activity_h5);
 
         Bundle bundle = getIntent().getBundleExtra("bundle");
-        mUrl = bundle.getString("url");
+        mUrl = bundle.getString(H5_URL);
 
         Log.d("Url:", mUrl);
 
