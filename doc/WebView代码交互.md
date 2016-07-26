@@ -22,6 +22,8 @@
 [WebView代码交互]()
 [WebView性能优化]()
 
+#一 Android原生方案
+
 关于WebView中Java代码和JS代码的交互实现, Android给了一套原生的方案, 我们先来看看原生的用法。后面我们还会讲到其他的开源方法。
 
 JavaScript代码和Android代码是通过addJavascriptInterface()来建立连接的, 我们来看下具体的用法。
@@ -90,13 +92,13 @@ as described in the following section).
  
 下面正式引入我们在项目中常用的两套开源的替代方案
 
-#一 jockeyjs
+#一 jockeyjs开源方案
 
 [jockeyjs](https://github.com/tcoulter/jockeyjs)是一套IOS/Android双平台的Native和JS交互方法, 比较适合用在项目中。
 
 >Library to facilitate communication between iOS apps and JS apps running inside a UIWebView
 
-jockeyjs对Native和JS的交互做了优美的封装, 事件的发送与接收都可以通过send()和on()来完成。
+jockeyjs对Native和JS的交互做了优美的封装, 事件的发送与接收都可以通过send()和on()来完成。我们先简单的看一下Event的发送与接收。
 
 Sending events from app to JavaScript
 
@@ -194,8 +196,112 @@ jockey.off("event-name");
 jockey.clear();
 ```
 
-#二 safe-java-js-webview-bridge
+通过上面的代码, 我们对jockeyjs的使用有了大致的理解, 下面我们具体来看一下在项目中的使用。
 
-解决方案是用开源方案
+1 依赖配置
 
-[pedant/safe-java-js-webview-bridge](https://github.com/pedant/safe-java-js-webview-bridge)来实现代码交互。
+下载代码: https://github.com/tcoulter/jockeyjs, 将JockeyJS.Android导入到工程中。
+
+2 jockeyjs配置
+
+jockeyjs有两种使用方式
+
+方式一:
+
+只在一个Activity中使用jockey或者多Activity共享一个jockey实例
+
+```java
+//Declare an instance of Jockey
+Jockey jockey;
+
+//The WebView that we will be using, assumed to be instantiated either through findViewById or some method of injection.
+WebView webView;
+
+WebViewClient myWebViewClient;
+
+@Override
+protected void onStart() {
+    super.onStart();
+
+    //Get the default JockeyImpl
+    jockey = JockeyImpl.getDefault();
+
+    //Configure your webView to be used with Jockey
+    jockey.configure(webView);
+
+    //Pass Jockey your custom WebViewClient
+    //Notice we can do this even after our webView has been configured.
+    jockey.setWebViewClient(myWebViewClient)
+
+    //Set some event handlers
+    setJockeyEvents();
+
+    //Load your webPage
+    webView.loadUrl("file:///your.url.com");
+}
+```
+
+方式二:
+
+另一种就是把jockey当成一种全局的Service来用, 这种方式下我们可以在多个Activity之间甚至整个应用内共享handler. 当然我们同样需要
+把jockey的生命周期和应用的生命周期绑定在一起。
+
+```java
+//First we declare the members involved in using Jockey
+
+//A WebView to interact with
+private WebView webView;
+
+//Our instance of the Jockey interface
+private Jockey jockey;
+
+//A helper for binding services
+private boolean _bound;
+
+//A service connection for making use of the JockeyService
+private ServiceConnection _connection = new ServiceConnection() {
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        _bound = false;
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        JockeyBinder binder = (JockeyBinder) service;
+
+        //Retrieves the instance of the JockeyService from the binder
+        jockey = binder.getService();
+
+        //This will setup the WebView to enable JavaScript execution and provide a custom JockeyWebViewClient
+        jockey.configure(webView);
+
+        //Make Jockey start listening for events
+        setJockeyEvents();
+
+        _bound = true;
+
+        //Redirect the WebView to your webpage.
+        webView.loadUrl("file:///android_assets/index.html");
+    }
+
+}
+
+///....Other member variables....////
+
+
+//Then we bind the JockeyService to our activity through a helper function in our onStart method
+@Override
+protected void onStart() {
+    super.onStart();
+    JockeyService.bind(this, _connection);
+}
+
+//In order to bind this with the Android lifecycle we need to make sure that the service also shuts down at the appropriate time.
+@Override
+protected void onStop() {
+    super.onStop();
+    if (_bound) {
+        JockeyService.unbind(this, _connection);
+    }
+}
+```
