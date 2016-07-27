@@ -1,16 +1,27 @@
 package com.guoxiaoxing.webview;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.GeolocationPermissions;
+import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 /**
  * Author: guoxiaoxing
@@ -23,21 +34,36 @@ import android.webkit.WebViewClient;
 public class H5Activity extends AppCompatActivity {
 
     public static final String H5_URL = "H5_URL";
+    private static final String TAG = H5Activity.class.getSimpleName();
+
+    private Toolbar mToolbar;
+    private ProgressBar mProgressBar;
+    private WebView mWebView;
 
     private String mUrl;
-    private WebView mWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_h5);
+        setupView();
+        setupSettings();
+        setupJockey();
+        setupData();
+    }
 
-        Bundle bundle = getIntent().getBundleExtra("bundle");
-        mUrl = bundle.getString(H5_URL);
+    private void setupView() {
+        mToolbar = (Toolbar) findViewById(R.id.h5_toolbar);
+        mProgressBar = (ProgressBar) findViewById(R.id.h5_progressbar);
+        mWebView = (WebView) findViewById(R.id.h5_webview);
+        mToolbar.setTitle("WebView");
+    }
 
-        Log.d("Url:", mUrl);
+    private void setupSettings() {
 
-        mWebView = (WebView) findViewById(R.id.webview_h5);
+        mWebView.setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
+        mWebView.setHorizontalScrollBarEnabled(false);
+        mWebView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
 
         WebSettings mWebSettings = mWebView.getSettings();
         mWebSettings.setSupportZoom(true);
@@ -46,16 +72,106 @@ public class H5Activity extends AppCompatActivity {
         mWebSettings.setDefaultTextEncodingName("utf-8");
         mWebSettings.setLoadsImagesAutomatically(true);
 
-        //调用JS方法.安卓版本大于17,加上注解 @JavascriptInterface
+        //JS
         mWebSettings.setJavaScriptEnabled(true);
+        mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+
+        mWebSettings.setAllowFileAccess(true);
+        mWebSettings.setUseWideViewPort(true);
+        mWebSettings.setDatabaseEnabled(true);
+        mWebSettings.setLoadWithOverviewMode(true);
+        mWebSettings.setDomStorageEnabled(true);
 
         saveData(mWebSettings);
-
         newWin(mWebSettings);
 
-        mWebView.setWebChromeClient(webChromeClient);
+        //缓存
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        if (info != null && info.isConnected()) {
+            String wvcc = info.getTypeName();
+            Log.d(TAG, "current network: " + wvcc);
+            mWebSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        } else {
+            Log.d(TAG, "No network is connected, use cache");
+            mWebSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        }
+
+        if (Build.VERSION.SDK_INT >= 16) {
+            mWebSettings.setAllowFileAccessFromFileURLs(true);
+            mWebSettings.setAllowUniversalAccessFromFileURLs(true);
+        }
+
+        if (Build.VERSION.SDK_INT >= 12) {
+            mWebSettings.setAllowContentAccess(true);
+        }
+
+        setupWebViewClient();
+        setupWebChromeClient();
+    }
+
+    private void setupJockey() {
+
+    }
+
+    private void setupData() {
+        mUrl = getIntent().getStringExtra(H5_URL);
+        if (TextUtils.isEmpty(mUrl)) {
+
+        } else {
+            mWebView.loadUrl(mUrl);
+        }
+    }
+
+    private void setupWebViewClient() {
+        WebViewClient webViewClient = new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return false;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+            }
+        };
         mWebView.setWebViewClient(webViewClient);
-        mWebView.loadUrl(mUrl);
+    }
+
+    private void setupWebChromeClient() {
+        WebChromeClient webChromeClient = new WebChromeClient() {
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+            }
+
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                mProgressBar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    mProgressBar.setVisibility(View.GONE);
+                } else {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                return super.onJsAlert(view, url, message, result);
+            }
+        };
+        mWebView.setWebChromeClient(webChromeClient);
     }
 
     /**
@@ -81,26 +197,32 @@ public class H5Activity extends AppCompatActivity {
         mWebSettings.setAppCachePath(appCachePath);
     }
 
-    WebViewClient webViewClient = new WebViewClient() {
-
-        /**
-         * 多页面在同一个WebView中打开，就是不新建activity或者调用系统浏览器打开
-         */
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
+            mWebView.goBack();
             return true;
         }
+        return super.onKeyDown(keyCode, event);
+    }
 
-    };
+    static class WebViewClientPlus extends WebViewClient {
 
-    WebChromeClient webChromeClient = new WebChromeClient() {
+        //URL在当前页跳转
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            return false;
+        }
+    }
 
-        //=========HTML5定位==========================================================
-        //需要先加入权限
-        //<uses-permission android:name="android.permission.INTERNET"/>
-        //<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-        //<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    static class WebChromeClientPlus extends WebChromeClient {
+
+        private WebView mWebView;
+
+        public WebChromeClientPlus(WebView webView) {
+            mWebView = webView;
+        }
+
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
             super.onReceivedIcon(view, icon);
@@ -113,13 +235,11 @@ public class H5Activity extends AppCompatActivity {
 
         @Override
         public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
-            callback.invoke(origin, true, false);//注意个函数，第二个参数就是是否同意定位权限，第三个是是否希望内核记住
+            //注意个函数，第二个参数就是是否同意定位权限，第三个是是否希望内核记住
+            callback.invoke(origin, true, false);
             super.onGeolocationPermissionsShowPrompt(origin, callback);
         }
-        //=========HTML5定位==========================================================
 
-
-        //=========多窗口的问题==========================================================
         @Override
         public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
             WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
@@ -127,16 +247,5 @@ public class H5Activity extends AppCompatActivity {
             resultMsg.sendToTarget();
             return true;
         }
-        //=========多窗口的问题==========================================================
-    };
-
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
-            mWebView.goBack();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }

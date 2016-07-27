@@ -12,9 +12,9 @@
 
 **关于文章**
 
->作者的每一篇文章都会同时发布在Github、CSDN和知乎上, 文章顶部也会附上文章的源链接和代码链接。如果文章中有什么疑问欢迎发邮件与
+>作者的每一篇文章都会同时发布在Github、CSDN和知乎上, 文章顶部也会附上Github上的文章链接和代码链接。如果文章中有什么疑问欢迎发邮件与
 我交流, 对于交流的问题, 请描述清楚并附上代码与日志, 我一般都会给予回复。如果文章中有什么错误, 也欢迎斧正。如果你觉得本文章对你
-有所帮助, 也欢迎去[我的Github](https://github.com/guoxiaoxing) star文章, 关注文章的最新的动态。
+有所帮助, 也欢迎去star文章, 关注文章的最新的动态。
 
 本系列文章讨论WebView的各种用法以及使用技巧, 一共包含三篇文章:
 
@@ -92,7 +92,7 @@ as described in the following section).
  
 下面正式引入我们在项目中常用的两套开源的替代方案
 
-#一 jockeyjs开源方案
+#二 jockeyjs开源方案
 
 [jockeyjs](https://github.com/tcoulter/jockeyjs)是一套IOS/Android双平台的Native和JS交互方法, 比较适合用在项目中。
 
@@ -304,4 +304,15 @@ protected void onStop() {
         JockeyService.unbind(this, _connection);
     }
 }
+```
+
+
+以上便是jockeyjs的大致用法, 在实际的项目中我们通常会自己去封装一个H5Activity用来统一显示H5页面, 下面就提供了完整的H5Activity, 封装了WebView各种特性与jockeyjs代码交互。
+
+该H5Activity提供WebView常用设置、H5页面解析、标题解析、进度条显示、错误页面展示、重新加载等功能。可以拿去稍作改造, 用于自己的项目中。
+
+
+```java
+
+
 ```

@@ -2,21 +2,21 @@
 manifest
 ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:2:1-29:12
 	package
-		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:3:5-40
+		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:3:11-46
 		INJECTED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml
 		INJECTED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml
 	android:versionName
-		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:5:5-30
+		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:5:11-36
 		INJECTED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml
 		INJECTED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml
 	android:versionCode
-		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:4:5-28
+		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:4:11-34
 		INJECTED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml
 		INJECTED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml
 	xmlns:android
 		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:2:11-69
 uses-sdk
-ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:7:5-9:41
+ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:7:5-9:40
 MERGED from [webview-best-practice:jockeyJSAndroid:unspecified] /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/build/intermediates/exploded-aar/webview-best-practice/jockeyJSAndroid/unspecified/AndroidManifest.xml:7:5-9:41
 	android:targetSdkVersion
 		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:9:9-38
@@ -35,8 +35,6 @@ ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSam
 MERGED from [webview-best-practice:jockeyJSAndroid:unspecified] /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/build/intermediates/exploded-aar/webview-best-practice/jockeyJSAndroid/unspecified/AndroidManifest.xml:11:5-16:19
 	android:label
 		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:15:9-41
-	android:debuggable
-		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:16:41-66
 	android:allowBackup
 		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:13:9-35
 	android:icon
@@ -52,11 +50,11 @@ ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSam
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
 ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:20:13-24:29
 action#android.intent.action.MAIN
-ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:21:17-69
+ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:21:17-68
 	android:name
 		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:21:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:23:17-77
+ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:23:17-76
 	android:name
 		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:23:27-74
 service#com.jockeyjs.JockeyService
