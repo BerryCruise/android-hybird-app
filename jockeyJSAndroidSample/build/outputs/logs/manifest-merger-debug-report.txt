@@ -58,6 +58,6 @@ ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSam
 	android:name
 		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:23:27-74
 service#com.jockeyjs.JockeyService
-ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:26:9-70
+ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:26:9-61
 	android:name
 		ADDED from /Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/AndroidManifest.xml:26:18-59

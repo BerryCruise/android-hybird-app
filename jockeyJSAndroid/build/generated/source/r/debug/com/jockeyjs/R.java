@@ -25,7 +25,7 @@ public final class R {
             backward-compatibility can go here.
         
          */
-        public static int AppBaseTheme=0x7f030000;
+        public static int AppBaseTheme =0x7f030000;
         /**  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static int AppTheme=0x7f030001;
