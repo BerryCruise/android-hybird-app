@@ -1,6 +1,6 @@
-#WebView基本用法
+# WebView基本用法
 
-作者: 郭嘉
+作者: 郭嘉  
 邮箱: guoxiaoxingv@163.com  
 博客: https://guoxiaoxing.github.io/  
 知乎: https://www.zhihu.com/people/allen-wells
@@ -12,10 +12,15 @@
 
 **关于文章**
 
->作者的每一篇文章都会同时发布在Github、CSDN和知乎上, 文章顶部也会附上文章的源链接和代码链接。如果文章中有什么疑问欢迎发邮件与
+>作者的每一篇文章都会同时发布在Github、CSDN和知乎上, 文章顶部也会附上Github上的文章链接和代码链接。如果文章中有什么疑问欢迎发邮件与
 我交流, 对于交流的问题, 请描述清楚并附上代码与日志, 我一般都会给予回复。如果文章中有什么错误, 也欢迎斧正。如果你觉得本文章对你
-有所帮助, 也欢迎去[我的Github](https://github.com/guoxiaoxing) star文章, 关注文章的最新的动态。
+有所帮助, 也欢迎去star文章, 关注文章的最新的动态。
 
+本系列文章讨论WebView的各种用法以及使用技巧, 一共包含三篇文章:
+
+[WebView基本用法](https://github.com/guoxiaoxing/webview-best-practice/blob/master/doc/WebView%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95.md)
+[WebView代码交互](https://github.com/guoxiaoxing/webview-best-practice/blob/master/doc/WebView%E4%BB%A3%E7%A0%81%E4%BA%A4%E4%BA%92.md)
+[WebView性能优化](https://github.com/guoxiaoxing/webview-best-practice/blob/master/doc/WebView%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.md)
 
 WebView也是Android View的一种, 我们通常用它来在应用内部展示网页, 和以往一样, 我们先来简单看一下它的基本用法。
 
@@ -45,11 +50,11 @@ myWebView.loadUrl("http://www.example.com");
 
 以上就是WebView的简单用法, 相比大家已经十分熟悉, 下面我们就来逐一看看WebView的其他特性。
 
-#一 WebView基本组件
+# 一 WebView基本组件
 
 了解了基本用法, 我们对WebView就有了大致的印象, 下面我们来看看构建Web应用的三个重要组件。
 
-##1.1 WebSettings
+## 1.1 WebSettings
 
 WebSettings用来对WebView做各种设置, 你可以这样获取WebSettings:
 
@@ -91,7 +96,7 @@ JS处理
 - setPluginState(PluginState.OFF); //设置是否支持flash插件
 - setDefaultFontSize(20); //设置默认字体大小
 
-##1.2 WebViewClient
+## 1.2 WebViewClient
 
 WebViewClient用来帮助WebView处理各种通知, 请求事件。我们通过继承WebViewClient并重载它的方法可以实现不同功能的定制。具体如下所示:
 
@@ -119,7 +124,7 @@ WebViewClient用来帮助WebView处理各种通知, 请求事件。我们通过�
 
 - onUnhandledKeyEvent(WebView view, KeyEvent event) //Key事件未被加载时调用
 
-##1.3 WebChromeClient
+## 1.3 WebChromeClient
 
 WebChromeClient用来帮助WebView处理JS的对话框、网址图标、网址标题和加载进度等。同样地, 通过继承WebChromeClient并重载它的方法也可以实现不同功能的定制, 如下所示:
 
@@ -139,25 +144,25 @@ WebChromeClient用来帮助WebView处理JS的对话框、网址图标、网址�
 
 - public boolean onJsConfirm(WebView view, String url, String message, JsResult result); //处理prompt弹出框
 
-#二 WebView生命周期
+# 二 WebView生命周期
 
-##2.1 onResume()  
+## 2.1 onResume()  
 
 WebView为活跃状态时回调，可以正常执行网页的响应。
 
-##2.2 onPause() 
+## 2.2 onPause() 
 
 WebView被切换到后台时回调, 页面被失去焦点, 变成不可见状态，onPause动作通知内核暂停所有的动作，比如DOM的解析、plugin的执行、JavaScript执行。
 
-##2.3 pauseTimers() 
+## 2.3 pauseTimers() 
 
 当应用程序被切换到后台时回调，该方法针对全应用程序的WebView，它会暂停所有webview的layout，parsing，javascripttimer。降低CPU功耗。
 
-##2.4 resumeTimers()
+## 2.4 resumeTimers()
 
 恢复pauseTimers时的动作。
 
-##2.5 destroy() 
+## 2.5 destroy() 
 
 关闭了Activity时回调, WebView调用destory时, WebView仍绑定在Activity上.这是由于自定义WebView构建时传入了该Activity的context对象, 因此需要先从父
 容器中移除WebView, 然后再销毁webview。
@@ -167,9 +172,9 @@ mRootLayout.removeView(webView);
 mWebView.destroy();
 ```
 
-#三 WebView页面导航
+# 三 WebView页面导航
 
-##3.1 页面跳转
+## 3.1 页面跳转
 
 当我们在WebView点击链接时, 默认的WebView会直接跳转到别的浏览器中, 如果想要实现在WebView内跳转就需要设置WebViewClient, 下面我们先来
 说说WebView、WebViewClient、WebChromeClient三者的区别。
@@ -250,7 +255,7 @@ shouldOverrideUrlLoading()方法在API >= 24时被标记deprecated, 它的替代
 http://stackoverflow.com/questions/36484074/is-shouldoverrideurlloading-really-deprecated-what-can-i-use-instead  
 http://stackoverflow.com/questions/26651586/difference-between-shouldoverrideurlloading-and-shouldinterceptrequest
 
-##3.2 页面回退
+## 3.2 页面回退
 
 Android的返回键, 如果想要实现WebView内网页的回退, 可以重写onKeyEvent()方法。
 
@@ -268,7 +273,7 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 }
 ```
 
-##3.3 页面滑动
+## 3.3 页面滑动
 
 关于页面滑动, 我们在做下拉刷新等功能时, 经常会去判断WebView是否滚动到顶部或者滚动到底部。
 
@@ -332,7 +337,7 @@ https://developer.android.com/reference/android/webkit/WebView.html
 
 http://stackoverflow.com/questions/16079863/how-get-webview-scale-in-android-4
 
-#三 WebView缓存实现
+# 三 WebView缓存实现
 
 在项目中如果使用到WebView控件, 当加载html页面时, 会在/data/data/包名目录下生成database与cache两个文件夹。
 请求的url记录是保存在WebViewCache.db, 而url的内容是保存在WebViewCache文件夹下。
@@ -357,7 +362,7 @@ clearHistory (); //清除当前webview访问的历史记录，只会webview访�
 clearFormData () //这个api仅仅清除自动完成填充的表单数据，并不会清除WebView存储到本地的数据。
 ```
 
-#四 WebView Cookies
+# 四 WebView Cookies
 
 添加Cookies
 
@@ -381,7 +386,7 @@ public void synCookies() {
 CookieManager.getInstance().removeSessionCookie();
 ```
 
-#四 WebView本地资源访问
+# 五 WebView本地资源访问
 
 当我们在WebView中加载出从web服务器上拿取的内容时，是无法访问本地资源的，如assets目录下的图片资源，因为这样的行为属于跨域行为（Cross-Domain），而WebView是禁止
 的。解决这个问题的方案是把html内容先下载到本地，然后使用loadDataWithBaseURL加载html。这样就可以在html中使用 file:///android_asset/xxx.png 的链接来引用包里

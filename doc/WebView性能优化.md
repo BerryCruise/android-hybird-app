@@ -1,6 +1,6 @@
-#WebView性能优化
+# WebView性能优化
 
-作者: 郭嘉
+作者: 郭嘉  
 邮箱: guoxiaoxingv@163.com  
 博客: https://guoxiaoxing.github.io/  
 知乎: https://www.zhihu.com/people/allen-wells
@@ -12,11 +12,17 @@
 
 **关于文章**
 
->作者的每一篇文章都会同时发布在Github、CSDN和知乎上, 文章顶部也会附上文章的源链接和代码链接。如果文章中有什么疑问欢迎发邮件与
+>作者的每一篇文章都会同时发布在Github、CSDN和知乎上, 文章顶部也会附上Github上的文章链接和代码链接。如果文章中有什么疑问欢迎发邮件与
 我交流, 对于交流的问题, 请描述清楚并附上代码与日志, 我一般都会给予回复。如果文章中有什么错误, 也欢迎斧正。如果你觉得本文章对你
-有所帮助, 也欢迎去[我的Github](https://github.com/guoxiaoxing) star文章, 关注文章的最新的动态。
+有所帮助, 也欢迎去star文章, 关注文章的最新的动态。
 
-#一 优化网页加载速度
+本系列文章讨论WebView的各种用法以及使用技巧, 一共包含三篇文章:
+
+[WebView基本用法](https://github.com/guoxiaoxing/webview-best-practice/blob/master/doc/WebView%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95.md)
+[WebView代码交互](https://github.com/guoxiaoxing/webview-best-practice/blob/master/doc/WebView%E4%BB%A3%E7%A0%81%E4%BA%A4%E4%BA%92.md)
+[WebView性能优化](https://github.com/guoxiaoxing/webview-best-practice/blob/master/doc/WebView%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.md)
+
+# 一 优化网页加载速度
 
 默认情况html代码下载到WebView后，webkit开始解析网页各个节点，发现有外部样式文件或者外部脚本文件时，会异步发起网络请求下载文件，但如果
 在这之前也有解析到image节点，那势必也会发起网络请求下载相应的图片。在网络情况较差的情况下，过多的网络请求就会造成带宽紧张，影响到css或
@@ -49,7 +55,7 @@ public void onPageFinished(WebView view, String url) {
 
 **注意**: 4.4以上系统在onPageFinished时再恢复图片加载时,如果存在多张图片引用的是相同的src时，会只有一个image标签得到加载，因而对于这样的系统我们就先直接加载。
 
-#二 硬件加速页面闪烁问题
+# 二 硬件加速页面闪烁问题
 
 4.0以上的系统我们开启硬件加速后，WebView渲染页面更加快速，拖动也更加顺滑。但有个副作用就是，当WebView视图被整体遮住一块，然后突然恢复时（比如使用SlideMenu将WebView从侧边
 滑出来时），这个过渡期会出现白块同时界面闪烁。解决这个问题的方法是在过渡期前将WebView的硬件加速临时关闭，过渡期后再开启，如下所示:
