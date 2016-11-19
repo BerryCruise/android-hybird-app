@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/android-hybird-app.iml" filepath="$PROJECT_DIR$/android-hybird-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/jockeyJSAndroid/jockeyJSAndroid.iml" filepath="$PROJECT_DIR$/jockeyJSAndroid/jockeyJSAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/jockeyJSAndroidSample/jockeyJSAndroidSample.iml" filepath="$PROJECT_DIR$/jockeyJSAndroidSample/jockeyJSAndroidSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/webview/webview.iml" filepath="$PROJECT_DIR$/webview/webview.iml" />
-      <module fileurl="file://$PROJECT_DIR$/webview-best-practice.iml" filepath="$PROJECT_DIR$/webview-best-practice.iml" />
     </modules>
   </component>
 </project>

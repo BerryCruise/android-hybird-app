@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+        "outputFile": "/Users/guoxiaoxing/Github-Android/android-hybird-app/jockeyJSAndroidSample/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 108
                 },
                 "from": {
-                    "file": "/Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/res/values/dimens.xml",
+                    "file": "/Users/guoxiaoxing/Github-Android/android-hybird-app/jockeyJSAndroidSample/src/main/res/values/dimens.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -30,7 +30,7 @@
                     "endOffset": 164
                 },
                 "from": {
-                    "file": "/Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/res/values/dimens.xml",
+                    "file": "/Users/guoxiaoxing/Github-Android/android-hybird-app/jockeyJSAndroidSample/src/main/res/values/dimens.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -49,7 +49,7 @@
                     "endOffset": 220
                 },
                 "from": {
-                    "file": "/Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/res/values/strings.xml",
+                    "file": "/Users/guoxiaoxing/Github-Android/android-hybird-app/jockeyJSAndroidSample/src/main/res/values/strings.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -68,7 +68,7 @@
                     "endOffset": 271
                 },
                 "from": {
-                    "file": "/Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/res/values/strings.xml",
+                    "file": "/Users/guoxiaoxing/Github-Android/android-hybird-app/jockeyJSAndroidSample/src/main/res/values/strings.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -88,7 +88,7 @@
                     "endOffset": 562
                 },
                 "from": {
-                    "file": "/Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/res/values/styles.xml",
+                    "file": "/Users/guoxiaoxing/Github-Android/android-hybird-app/jockeyJSAndroidSample/src/main/res/values/styles.xml",
                     "position": {
                         "startLine": 6,
                         "startColumn": 4,
@@ -106,17 +106,38 @@
                     "startOffset": 567,
                     "endLine": 15,
                     "endColumn": 12,
-                    "endOffset": 722
+                    "endOffset": 719
                 },
                 "from": {
-                    "file": "/Users/guoxiaoxing/Downloads/webview-best-practice/jockeyJSAndroidSample/src/main/res/values/styles.xml",
+                    "file": "/Users/guoxiaoxing/Github-Android/android-hybird-app/jockeyJSAndroidSample/src/main/res/values/styles.xml",
                     "position": {
                         "startLine": 15,
                         "startColumn": 4,
                         "startOffset": 510,
                         "endLine": 17,
                         "endColumn": 12,
-                        "endOffset": 665
+                        "endOffset": 662
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 724,
+                    "endLine": 17,
+                    "endColumn": 12,
+                    "endOffset": 790
+                },
+                "from": {
+                    "file": "/Users/guoxiaoxing/Github-Android/android-hybird-app/jockeyJSAndroidSample/build/intermediates/exploded-aar/android-hybird-app/jockeyJSAndroid/unspecified/res/values/values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 161,
+                        "endLine": 6,
+                        "endColumn": 12,
+                        "endOffset": 227
                     }
                 }
             }

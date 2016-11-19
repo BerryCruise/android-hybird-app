@@ -48,9 +48,13 @@ public final class R {
             backward-compatibility can go here.
         
          */
-        public static final int AppBaseTheme =0x7f050000;
+        public static final int AppBaseTheme=0x7f050000;
         /**  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f050001;
+        public static final int AppTheme=0x7f050002;
+        /**  API 11 theme customizations can go here. 
+ API 14 theme customizations can go here. 
+         */
+        public static final int BaseTheme=0x7f050001;
     }
 }
