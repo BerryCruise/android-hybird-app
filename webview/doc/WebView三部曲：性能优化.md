@@ -23,9 +23,10 @@
 
 本系列文章讨论WebView的各种用法以及使用技巧, 一共包含三篇文章:
 
-[WebView基本用法](https://github.com/guoxiaoxing/webview-best-practice/blob/master/doc/WebView%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95.md)
-[WebView代码交互](https://github.com/guoxiaoxing/webview-best-practice/blob/master/doc/WebView%E4%BB%A3%E7%A0%81%E4%BA%A4%E4%BA%92.md)
-[WebView性能优化](https://github.com/guoxiaoxing/webview-best-practice/blob/master/doc/WebView%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.md)
+- [WebView三部曲：基本用法](/webview/doc/WebView三部曲：基本用法.md) 
+- [WebView三部曲：代码交互](/webview/doc/WebView三部曲：代码交互.md) 
+- [WebView三部曲：性能优化](/webview/doc/WebView三部曲：性能优化.md)
+
 
 # 一 优化网页加载速度
 
