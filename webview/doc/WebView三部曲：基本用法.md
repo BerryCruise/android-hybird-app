@@ -17,9 +17,9 @@
 
 本系列文章讨论WebView的各种用法以及使用技巧, 一共包含三篇文章:
 
-- [WebView三部曲：基本用法](/webview/doc/WebView三部曲：基本用法.md) 
-- [WebView三部曲：代码交互](/webview/doc/WebView三部曲：代码交互.md) 
-- [WebView三部曲：性能优化](/webview/doc/WebView三部曲：性能优化.md)
+- [WebView三部曲：基本用法](https://github.com/guoxiaoxing/android-hybird-app/blob/master/webview/doc/WebView三部曲：基本用法.md) 
+- [WebView三部曲：代码交互](https://github.com/guoxiaoxing/android-hybird-app/blob/master/webview/doc/WebView三部曲：代码交互.md) 
+- [WebView三部曲：性能优化](https://github.com/guoxiaoxing/android-hybird-app/blob/master/webview/doc/WebView三部曲：性能优化.md)
 
 
 WebView也是Android View的一种, 我们通常用它来在应用内部展示网页, 和以往一样, 我们先来简单看一下它的基本用法。
